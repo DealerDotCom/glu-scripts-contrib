@@ -641,5 +641,5 @@ exit 1;
 </Server>
 """
 
-    static String DEFAULT_CATALINA_OPTS = "-Djava.awt.headless=true -Dfile.encoding=UTF-8 -server -Xms@xms@ -Xmx@xmx@ -XX:NewSize=@newSize@ -XX:MaxNewSize=@maxNewSize@ -XX:PermSize=@permSize@ -XX:MaxPermSize=@maxPerSize@ -XX:+DisableExplicitGC"
+    static String DEFAULT_CATALINA_OPTS = "export CATALINA_OPTS=\"-Djava.awt.headless=true -Dfile.encoding=UTF-8 -server -Xms@xms@ -Xmx@xmx@ -XX:NewSize=@newSize@ -XX:MaxNewSize=@maxNewSize@ -XX:PermSize=@permSize@ -XX:MaxPermSize=@maxPerSize@ -XX:+DisableExplicitGC\""
 }
