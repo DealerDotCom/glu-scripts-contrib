@@ -116,6 +116,7 @@ class TomcatGluScript
   def logsDir
   def serverLog
   def pid
+  def ajpPort
   def port
   def webapps
 
@@ -325,6 +326,7 @@ class TomcatGluScript
     
     
     port = (params.port ?: 8080) as int
+    ajpPort = port + 30000
     def shutdownPort = (params.shutdownPort ?: port + 200) as int
     
     def maxThreads = (params.maxThreads ?: 150) as int
@@ -609,9 +611,9 @@ exit 1;
 <Server port="@shutdownPort@" shutdown="SHUTDOWN">
   <Listener className="org.apache.catalina.core.AprLifecycleListener" SSLEngine="on" />
   <Listener className="org.apache.catalina.core.JasperListener" />
-  <Listener className="org.apache.catalina.core.JreMemoryLeakPreventionListener" />
+  <Listener className="org.apache.catalina.mbeans.ServerLifecycleListener" />
   <Listener className="org.apache.catalina.mbeans.GlobalResourcesLifecycleListener" />
-  <Listener className="org.apache.catalina.core.ThreadLocalLeakPreventionListener" />
+
   <GlobalNamingResources>
     <Resource name="UserDatabase" auth="Container"
               type="org.apache.catalina.UserDatabase"
@@ -619,22 +621,19 @@ exit 1;
               factory="org.apache.catalina.users.MemoryUserDatabaseFactory"
               pathname="conf/tomcat-users.xml" />
   </GlobalNamingResources>
+
   <Service name="Catalina">
+    <Connector port="@port@" protocol="HTTP/1.1" enableLookups="false"
+               connectionTimeout="20000" />
+    <Connector port="@ajpPort@" protocol="AJP/1.3" enableLookups="false" />
     <Executor name="tomcatThreadPool" namePrefix="catalina-exec-"
         maxThreads="@maxThreads@" minSpareThreads="@minSpareThreads@"/>
-    <Connector port="@port@" protocol="HTTP/1.1"
-               connectionTimeout="20000"
-               executor="tomcatThreadPool"/>
     <Engine name="Catalina" defaultHost="localhost">
-      <Realm className="org.apache.catalina.realm.LockOutRealm">
-        <Realm className="org.apache.catalina.realm.UserDatabaseRealm"
-               resourceName="UserDatabase"/>
-      </Realm>
+      <Realm className="org.apache.catalina.realm.UserDatabaseRealm"
+             resourceName="UserDatabase"/>
       <Host name="localhost"  appBase="webapps"
-            unpackWARs="true" autoDeploy="true">
-        <Valve className="org.apache.catalina.valves.AccessLogValve" directory="logs"
-               prefix="localhost_access_log." suffix=".txt"
-               pattern="%h %l %u %t &quot;%r&quot; %s %b" />
+            unpackWARs="@unpackWARs@" autoDeploy="@auto"
+            xmlValidation="false" xmlNamespaceAware="false">
       </Host>
     </Engine>
   </Service>
