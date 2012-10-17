@@ -342,7 +342,7 @@ class TomcatGluScript
         autoDeploy : autoDeploy
         ]
     
-    shell.saveContent(serverRoot.'conf/server.xml', DEFAULT_SERVER_XML, params)
+    //shell.saveContent(serverRoot.'conf/server.xml', DEFAULT_SERVER_XML, params)
   }
   
   private def configureWebapps = {
