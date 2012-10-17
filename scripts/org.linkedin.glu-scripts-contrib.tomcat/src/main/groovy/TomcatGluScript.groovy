@@ -344,7 +344,7 @@ class TomcatGluScript
         autoDeploy : autoDeploy
         ]
     
- 	shell.saveContent(serverRoot.'bin/setenv.sh', DEFAULT_JAVA_OPTS, [xmx:'1800m',xms:'512m',newSize:'256m',maxNewSize:'256m',permSize:'256m',maxPermSize:'256m'])
+ 	shell.saveContent(serverRoot.'bin/setenv.sh', DEFAULT_CATALINA_OPTS, [xmx:'1800m',xms:'512m',newSize:'256m',maxNewSize:'256m',permSize:'256m',maxPermSize:'256m'])
     shell.saveContent(serverRoot.'conf/server.xml', DEFAULT_SERVER_XML, params)
   }
   
