@@ -344,7 +344,8 @@ class TomcatGluScript
         autoDeploy : autoDeploy
         ]
     
-    //shell.saveContent(serverRoot.'conf/server.xml', DEFAULT_SERVER_XML, params)
+ 	shell.saveContent(serverRoot.'bin/setenv.sh', DEFAULT_JAVA_OPTS, [xmx:'1800m',xms:'512m',newSize:'256m',maxNewSize:'256m',permSize:'256m',maxPermSize:'256m'])
+    shell.saveContent(serverRoot.'conf/server.xml', DEFAULT_SERVER_XML, params)
   }
   
   private def configureWebapps = {
@@ -639,4 +640,6 @@ exit 1;
   </Service>
 </Server>
 """
+
+    static String DEFAULT_CATALINA_OPTS = "-Djava.awt.headless=true -Dfile.encoding=UTF-8 -server -Xms@xms@ -Xmx@xmx@ -XX:NewSize=@newSize@ -XX:MaxNewSize=@maxNewSize@ -XX:PermSize=@permSize@ -XX:MaxPermSize=@maxPerSize@ -XX:+DisableExplicitGC"
 }
